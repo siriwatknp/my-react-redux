@@ -1,25 +1,35 @@
-import { AppContainer } from 'react-hot-loader'; // required
 import React from 'react';
 import ReactDOM from 'react-dom';
+import {Provider} from "react-redux";
+import {Router,browserHistory} from 'react-router';
+import {syncHistoryWithStore} from "react-router-redux";
+import configureStore from "./store";
+import injectTapEventPlugin from "react-tap-event-plugin";
+import createRoutes from "./routes";
 
-import App from './front/App';
+injectTapEventPlugin();
+
+const initialState = {};
+const store = configureStore(initialState, browserHistory);
+const history = syncHistoryWithStore(browserHistory, store);
 
 const mountApp = document.getElementById('root');
 
 ReactDOM.render(
-	<AppContainer>
-		<App />
-	</AppContainer>,
+	<Provider store={store}>
+		<Router 
+			history={history}
+			routes={createRoutes(store)}
+		/>
+	</Provider>,	
 	mountApp
 );
 
 if (module.hot) {
 	module.hot.accept('./front/App', () => {
-		var App = require('./front/App').default;
+		const NextApp = require('./front/App').default;
 		ReactDOM.render(
-			<AppContainer>
-				<App />
-			</AppContainer>	,
+			<NextApp />,
 			mountApp
 		);
 	});
