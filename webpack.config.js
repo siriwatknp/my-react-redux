@@ -8,7 +8,6 @@ const extractCSS = new ExtractTextPlugin('[name].css');
 module.exports = {
 	devtool:'eval-source-map',
 	entry:[
-		'react-hot-loader/patch',
 		'webpack-dev-server/client?http://localhost:8080',
 		'webpack/hot/only-dev-server',
 		'./app/index.js',
@@ -23,7 +22,7 @@ module.exports = {
 			{
 				test:/\.jsx?/,
 				exclude: /node_modules/,
-				loaders:['babel-loader']
+				loaders:['react-hot','babel-loader']
 			},
 			{
 				test: /\.scss$/i,
